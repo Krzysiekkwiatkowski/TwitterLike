@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import pl.coderslab.entity.User;
 import pl.coderslab.repository.UserRepository;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -25,12 +26,13 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String postRegister(@Valid @ModelAttribute User user, BindingResult result){
+    public String postRegister(@Valid @ModelAttribute User user, BindingResult result, HttpSession session){
         if(result.hasErrors()){
             return "registerForm";
         }
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRepository.save(user);
+        session.setAttribute("user", user);
         return "homePage";
     }
 
@@ -41,7 +43,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String postLogin(@Valid @ModelAttribute User user, BindingResult result, Model model){
+    public String postLogin(@Valid @ModelAttribute User user, BindingResult result, Model model, HttpSession session){
         User loadedUser = userRepository.findByEmail(user.getEmail());
         if(loadedUser == null){
             model.addAttribute("error", "error");
@@ -53,6 +55,7 @@ public class LoginController {
                 return "loginForm";
             }
         }
-        return "homePage";
+        session.setAttribute("user", loadedUser);
+        return "redirect:/home";
     }
 }

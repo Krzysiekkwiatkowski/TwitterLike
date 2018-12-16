@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: oem
-  Date: 15.12.18
-  Time: 12:05
+  Date: 16.12.18
+  Time: 20:09
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -13,11 +13,9 @@
     <title>Title</title>
 </head>
 <body>
-<h1> Twitterlike </h1>
-Add tweet <c:import url="addTweet.jsp" />
-<p> Tweets: </p>
-<c:forEach items="${tweets}" var="tweet">
-    ${tweet.created} ${tweet.user.username} ${tweet.text}</br>
-</c:forEach>
+<form action="http://localhost:8080/home" method="post">
+    Tweet: <input type="text" name="text"/>
+    <input type="submit" value="Tweet">
+</form>
 </body>
 </html>
