@@ -70,6 +70,23 @@ public class MessageController {
         }
     }
 
+    @RequestMapping("/message/{id}/{view}")
+    public String messageViewed(@PathVariable("id") Long id, @PathVariable("view") Boolean view, HttpSession session, Model model){
+        Object object = session.getAttribute("user");
+        if(object == null){
+            return "redirect:/twitter/login";
+        }
+        User user = (User)object;
+        User loadedUser = userRepository.findByEmail(user.getEmail());
+        Message message = messageRepository.findOne(id);
+        if(message.getReceiver().getId() == loadedUser.getId() && view == false){
+            message.setView(true);
+            messageRepository.save(message);
+        }
+        model.addAttribute("message", message);
+        return "showMessage";
+    }
+
     @ModelAttribute("receivedMessageList")
     public List<Message> getAllReceivedMessages(String email){
         List<Message> messages = messageRepository.findByReceiver(userRepository.findByEmail(email));
