@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequestMapping("/twitter")
 @Controller
 public class HomeController {
     @Autowired
@@ -29,7 +30,7 @@ public class HomeController {
     @RequestMapping(value = "/home", method = RequestMethod.POST)
     public String homePost(@RequestParam("text") String text, HttpSession session) {
         if (text.isEmpty()) {
-            return "redirect:/home";
+            return "redirect:/twitter/home";
         } else {
             Object object = session.getAttribute("user");
             if (object != null) {
@@ -40,19 +41,19 @@ public class HomeController {
                 tweet.setText(text);
                 tweetRepository.save(tweet);
             } else {
-                return "redirect:/login";
+                return "redirect:/twitter/login";
             }
-            return "redirect:/home";
+            return "redirect:/twitter/home";
         }
     }
 
-        @ModelAttribute
-        public List<Tweet> getAllTweets () {
-            List<Tweet> tweets = tweetRepository.findAll();
-            List<Tweet> newTweets = new ArrayList<>();
-            for (int i = 0; i < tweets.size(); i++) {
-                newTweets.add(i, tweets.get(tweets.size() - i - 1));
-            }
-            return newTweets;
+    @ModelAttribute
+    public List<Tweet> getAllTweets() {
+        List<Tweet> tweets = tweetRepository.findAll();
+        List<Tweet> newTweets = new ArrayList<>();
+        for (int i = 0; i < tweets.size(); i++) {
+            newTweets.add(i, tweets.get(tweets.size() - i - 1));
         }
+        return newTweets;
     }
+}

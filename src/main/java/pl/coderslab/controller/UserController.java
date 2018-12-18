@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequestMapping("/twitter")
 @Controller
 public class UserController {
     @Autowired
@@ -33,7 +34,7 @@ public class UserController {
     public String allTweets(Model model, HttpSession session){
         Object object = session.getAttribute("user");
         if(object == null){
-            return "redirect:/login";
+            return "redirect:/twitter/login";
         } else {
             User user = (User) object;
             model.addAttribute("userTweets", allUserTweets(user.getEmail()));
@@ -49,16 +50,11 @@ public class UserController {
         return "tweetDetails";
     }
 
-    @ModelAttribute("userTweets")
-    public List<Tweet> allUserTweets(String email){
-        return tweetRepository.findByUser(userRepository.findByEmail(email));
-    }
-
     @RequestMapping("/comment/{id}")
     public String addComment(@PathVariable("id") Long id, @RequestParam("text") String text, HttpSession session){
         Object object = session.getAttribute("user");
         if(object == null){
-            return "redirect:/login";
+            return "redirect:/twitter/login";
         } else {
             User user = (User)object;
             User loadedUser = userRepository.findByEmail(user.getEmail());
@@ -69,7 +65,7 @@ public class UserController {
             comment.setPost(tweet);
             commentRepository.save(comment);
         }
-        return "redirect:/user/" + id;
+        return "redirect:/twitter/user/" + id;
     }
 
     public List<Comment> tweetComments(Tweet tweet){
@@ -79,5 +75,10 @@ public class UserController {
             commentList.add(i, comments.get(comments.size() - 1 - i));
         }
         return commentList;
+    }
+
+    @ModelAttribute("userTweets")
+    public List<Tweet> allUserTweets(String email){
+        return tweetRepository.findByUser(userRepository.findByEmail(email));
     }
 }

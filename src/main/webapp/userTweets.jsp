@@ -13,11 +13,11 @@
     <title>Title</title>
 </head>
 <body>
-<h1> Twitterlike </h1>
+<h2> Twitterlike </h2>
 Add tweet <c:import url="addTweet.jsp" />
-<p> Twoje wpisy </p>
+<h4> Twoje wpisy </h4>
 <c:forEach items="${userTweets}" var="tweet">
-    ${tweet.created} (${tweet.user.username}) ${tweet.text} <a href="http://localhost:8080/user/${tweet.id}" > Szczegóły </a> </br>
+    ${tweet.created} (${tweet.user.username}) ${tweet.text} <a href="http://localhost:8080/twitter/user/${tweet.id}" > Szczegóły </a></br>
 </c:forEach>
 </body>
 </html>

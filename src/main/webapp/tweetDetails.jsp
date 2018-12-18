@@ -13,11 +13,11 @@
     <title>Title</title>
 </head>
 <body>
-<h1> Twitterlike </h1>
-<p> Szczegóły tweeta </p>
+<h2> Twitterlike </h2>
+<h4> Szczegóły tweeta </h4>
 ${tweet.id} ${tweet.created} ${tweet.user.username} ${tweet.text}</br>
 <c:if test="${not empty commentList}">
-    <p>Komentarze:</p>
+    <h4>Komentarze:</h4>
     <c:forEach items="${commentList}" var="comment">
         ${comment.user.username}: ${comment.text}</br>
     </c:forEach>
@@ -25,11 +25,11 @@ ${tweet.id} ${tweet.created} ${tweet.user.username} ${tweet.text}</br>
 <c:if test="${empty commentList}">
     <p>Nie dodano jeszcze komentarzy!</p>
 </c:if>
-<p>Add comment:
-    <form method="post" action="http://localhost:8080/comment/${tweet.id}">
+<h4>Add comment:
+    <form method="post" action="http://localhost:8080/twitter/comment/${tweet.id}">
         Comment: <input type="text" name="text">
         <input type="submit" value="Add comment">
     </form>
-</p>
+</h4>
 </body>
 </html>

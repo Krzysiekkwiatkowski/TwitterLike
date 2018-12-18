@@ -14,6 +14,7 @@ import pl.coderslab.repository.UserRepository;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@RequestMapping("/twitter")
 @Controller
 public class LoginController {
     @Autowired
@@ -56,6 +57,6 @@ public class LoginController {
             }
         }
         session.setAttribute("user", loadedUser);
-        return "redirect:/home";
+        return "redirect:/twitter/home";
     }
 }

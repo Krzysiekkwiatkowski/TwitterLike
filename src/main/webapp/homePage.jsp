@@ -13,11 +13,14 @@
     <title>Title</title>
 </head>
 <body>
-<h1> Twitterlike </h1>
-Add tweet <c:import url="addTweet.jsp" />
-<p> Tweets: </p>
+<h2> Twitterlike </h2>
+<h4><c:import url="addTweet.jsp" /></h4>
+<h4> Tweets: </h4>
 <c:forEach items="${tweets}" var="tweet">
-    ${tweet.created} ${tweet.user.username} ${tweet.text}</br>
+    ${tweet.created} ${tweet.user.username} ${tweet.text} <a href="http://localhost:8080/twitter/message/${tweet.user.id}"> Wyślij wiadomość </a></br>
 </c:forEach>
+<c:if test="${not empty error}" >
+    <p style="color: red"> Nie możesz wysłać wiadomości do samego siebie! </p>
+</c:if>
 </body>
 </html>
