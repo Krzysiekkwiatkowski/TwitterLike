@@ -66,6 +66,33 @@ public class LoginController {
         return "redirect:/twitter/home";
     }
 
+    @RequestMapping(value = "/password", method = RequestMethod.GET)
+    public String getResetPassword(Model model, HttpSession session){
+        Object object = session.getAttribute("user");
+        if(object == null){
+            return "redirect:/twitter/login";
+        }
+        User user = (User)object;
+        User loadedUser = userRepository.findByEmail(user.getEmail());
+        model.addAttribute("user", loadedUser);
+        return "resetPasswordForm";
+    }
+
+    @RequestMapping(value = "/password", method = RequestMethod.POST)
+    public String postResetPassword(@Valid @ModelAttribute User user, BindingResult result, @RequestParam("newPassword") String newPassword, HttpSession session, Model model){
+        User loadedUser = userRepository.findByEmail(user.getEmail());
+        boolean check = BCrypt.checkpw(user.getPassword(), loadedUser.getPassword());
+        if(check == false) {
+            model.addAttribute("wrongPassword", "wrongPassword");
+            return "resetPasswordForm";
+        } else {
+            loadedUser.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+            userRepository.save(loadedUser);
+            session.setAttribute("user", loadedUser);
+            return "redirect:/twitter/home";
+        }
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLogin(Model model){
         model.addAttribute("user", new User());
