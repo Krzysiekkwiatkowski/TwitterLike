@@ -25,7 +25,7 @@ ${tweet.id} ${tweet.created} ${tweet.user.username} ${tweet.text}</br>
 <c:if test="${empty commentList}">
     <p>Nie dodano jeszcze komentarzy!</p>
 </c:if>
-<h4>Add comment:
+<h4>
     <form method="post" action="http://localhost:8080/twitter/comment/${tweet.id}">
         Comment: <input type="text" name="text">
         <input type="submit" value="Add comment">

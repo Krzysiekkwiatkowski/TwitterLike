@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.entity.User;
 import pl.coderslab.repository.UserRepository;
 
@@ -27,14 +28,42 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String postRegister(@Valid @ModelAttribute User user, BindingResult result, HttpSession session){
+    public String postRegister(@Valid @ModelAttribute User user, BindingResult result, HttpSession session, Model model){
         if(result.hasErrors()){
             return "registerForm";
         }
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        for (User checkEmail : userRepository.findAll()) {
+            if(checkEmail.getEmail().equals(user.getEmail())){
+                model.addAttribute("notUnique", "notUnique");
+                return "registerForm";
+            }
+        }
         userRepository.save(user);
         session.setAttribute("user", user);
-        return "homePage";
+        return "redirect:/twitter/home";
+    }
+
+    @RequestMapping(value = "/editAccount", method = RequestMethod.GET)
+    public String getEdit(Model model, HttpSession session){
+        Object object = session.getAttribute("user");
+        if(object == null){
+            return "redirect:/twitter/login";
+        }
+        User user = (User)object;
+        User loadedUser = userRepository.findByEmail(user.getEmail());
+        model.addAttribute("user", loadedUser);
+        return "editAccountForm";
+    }
+
+    @RequestMapping(value = "/editAccount", method = RequestMethod.POST)
+    public String postEdit(@Valid @ModelAttribute User user, BindingResult result, HttpSession session, @RequestParam("dateOfBirth") String dateOfBirth){
+        if(result.hasErrors()){
+            return "editAccountForm";
+        }
+        userRepository.save(user);
+        session.setAttribute("user", user);
+        return "redirect:/twitter/home";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

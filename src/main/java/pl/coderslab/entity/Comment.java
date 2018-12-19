@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -22,6 +23,7 @@ public class Comment {
     private Tweet post;
     private Date created;
     @NotBlank
+    @Size(max = 60)
     private String text;
 
     public Comment() {
