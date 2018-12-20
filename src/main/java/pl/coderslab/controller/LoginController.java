@@ -99,6 +99,15 @@ public class LoginController {
         return "loginForm";
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String getLogout(HttpSession session){
+        Object object = session.getAttribute("user");
+        if(object != null){
+            session.setAttribute("user", null);
+        }
+        return "redirect:/twitter/home";
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String postLogin(@Valid @ModelAttribute User user, BindingResult result, Model model, HttpSession session){
         User loadedUser = userRepository.findByEmail(user.getEmail());

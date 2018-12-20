@@ -13,7 +13,9 @@
     <title>Title</title>
 </head>
 <body>
-<h2> Twitterlike </h2>
+<c:import url="logout.jsp" />
+<p><img style="display: block; margin-left: auto; margin-right: auto; width: 80%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY8AhTc1GOz0Ep8pvQeMgdlQwV1riBqeYIh645RuoYGUXRQ83y" /></p>
+<c:import url="navbar.jsp" />
 <h4> Szczegóły wiadomości </h4>
 ${message.sender.username} -> ${message.receiver.username} : ${message.message}</br>
 <a href="http://localhost:8080/twitter/message" > Cofnij </a>

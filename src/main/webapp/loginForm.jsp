@@ -13,13 +13,15 @@
     <title>Title</title>
 </head>
 <body>
+<c:import url="logbar.jsp" />
+<p><img style="display: block; margin-left: auto; margin-right: auto; width: 80%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY8AhTc1GOz0Ep8pvQeMgdlQwV1riBqeYIh645RuoYGUXRQ83y" /></p>
 <form:form method="post" modelAttribute="user">
     <c:if test="${not empty error}">
         Błędny login lub hasło!</br>
     </c:if>
     Email: <form:input path="email" /><form:errors path="email" cssClass="error" /></br>
     Password: <form:password path="password" /><form:errors path="password" cssClass="error" /></br>
-    <input type="submit" value="Login">
+    <input type="submit" value="Log in">
 </form:form>
 </body>
 </html>

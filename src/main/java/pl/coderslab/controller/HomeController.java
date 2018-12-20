@@ -22,7 +22,11 @@ public class HomeController {
     private TweetRepository tweetRepository;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homeGet(Model model) {
+    public String homeGet(Model model, HttpSession session) {
+        Object object = session.getAttribute("user");
+        if(object == null) {
+           return "homePageNotRegister";
+        }
         model.addAttribute("tweets", getAllTweets());
         return "homePage";
     }
