@@ -38,6 +38,7 @@ public class UserController {
         } else {
             User user = (User) object;
             model.addAttribute("userTweets", allUserTweets(user.getEmail()));
+            model.addAttribute("comments", allComments());
             return "userTweets";
         }
     }
@@ -80,5 +81,10 @@ public class UserController {
     @ModelAttribute("userTweets")
     public List<Tweet> allUserTweets(String email){
         return tweetRepository.findByUser(userRepository.findByEmail(email));
+    }
+
+    @ModelAttribute("comments")
+    public List<Comment> allComments(){
+        return commentRepository.findAll();
     }
 }

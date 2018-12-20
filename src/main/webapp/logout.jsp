@@ -12,5 +12,6 @@
 </head>
 <body>
 <p style="text-align: right"><a href="http://localhost:8080/twitter/logout" > Log out </a></p>
+<p style="text-align: center"><a href="http://localhost:8080/twitter/editAccount" > Edytuj informacje </a> | <a href="http://localhost:8080/twitter/password" > Reset hasła </a> | <a href="http://localhost:8080/twitter/deleteAccount" > Usuń konto </a></p>
 </body>
 </html>

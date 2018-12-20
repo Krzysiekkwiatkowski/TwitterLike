@@ -124,4 +124,17 @@ public class LoginController {
         session.setAttribute("user", loadedUser);
         return "redirect:/twitter/home";
     }
+
+    @RequestMapping(value = "/deleteAccount", method = RequestMethod.GET)
+    public String deleteAcoount(HttpSession session){
+        Object object = session.getAttribute("user");
+        if(object == null){
+            return "redirect:/twitter/login";
+        }
+        User user = (User)object;
+        User loadedUser = userRepository.findByEmail(user.getEmail());
+        userRepository.delete(loadedUser);
+        session.setAttribute("user", null);
+        return "redirect:/twitter/home";
+    }
 }
