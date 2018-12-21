@@ -19,7 +19,16 @@
 <h4><c:import url="addTweet.jsp" /></h4>
 <h4> Tweets: </h4>
 <c:forEach items="${tweets}" var="tweet">
-    ${tweet.created} ${tweet.user.username} ${tweet.text} <a href="http://localhost:8080/twitter/message/${tweet.user.id}"> Wyślij wiadomość </a></br>
+    ${tweet.created} ${tweet.user.username} ${tweet.text} <a href="http://localhost:8080/twitter/message/${tweet.user.id}"> Wyślij wiadomość </a> | <a href="http://localhost:8080/twitter/comment/${tweet.id}"> Skomentuj </a></br>
+    <c:if test="${not empty allow && tweet.id == allow}">
+        <h4>
+            <form method="post" action="http://localhost:8080/twitter/comment/${tweet.id}">
+                <input type="hidden" name="allow" value="allow">
+                Skomentuj: <input type="text" name="text">
+                <input type="submit" value="Skomentuj">
+            </form>
+        </h4>
+    </c:if>
 </c:forEach>
 <c:if test="${not empty error}" >
     <p style="color: red"> Nie możesz wysłać wiadomości do samego siebie! </p>

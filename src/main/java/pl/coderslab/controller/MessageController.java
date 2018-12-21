@@ -1,5 +1,6 @@
 package pl.coderslab.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,6 +91,12 @@ public class MessageController {
     @ModelAttribute("receivedMessageList")
     public List<Message> getAllReceivedMessages(String email){
         List<Message> messages = messageRepository.findByReceiver(userRepository.findByEmail(email));
+        for (Message message : messages) {
+            String text = message.getMessage();
+            if(text.length() > 30){
+                message.setMessage(StringUtils.substring(text,0, 29));
+            }
+        }
         List<Message> receivedMessageList = new ArrayList<>();
         for (int i = 0; i < messages.size(); i++) {
             receivedMessageList.add(i, messages.get(messages.size() - 1 - i));
@@ -100,6 +107,12 @@ public class MessageController {
     @ModelAttribute("sendMessageList")
     public List<Message> getAllSendMessages(String email){
         List<Message> messages = messageRepository.findBySender(userRepository.findByEmail(email));
+        for (Message message : messages) {
+            String text = message.getMessage();
+            if(text.length() > 30){
+                message.setMessage(StringUtils.substring(text,0, 29));
+            }
+        }
         List<Message> sendMessageList = new ArrayList<>();
         for (int i = 0; i < messages.size(); i++) {
             sendMessageList.add(i, messages.get(messages.size() - 1 - i));

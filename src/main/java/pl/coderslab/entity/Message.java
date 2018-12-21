@@ -3,6 +3,8 @@ package pl.coderslab.entity;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Message {
@@ -16,8 +18,10 @@ public class Message {
     @NotBlank
     private String message;
     private Boolean view;
+    private Date created;
 
     public Message() {
+        this.created = Date.valueOf(LocalDate.now());
     }
 
     public Long getId() {
@@ -58,5 +62,9 @@ public class Message {
 
     public void setView(Boolean view) {
         this.view = view;
+    }
+
+    public Date getCreated() {
+        return created;
     }
 }

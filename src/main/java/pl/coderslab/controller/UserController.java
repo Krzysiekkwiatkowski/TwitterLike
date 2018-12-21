@@ -3,10 +3,7 @@ package pl.coderslab.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.entity.Comment;
 import pl.coderslab.entity.Tweet;
 import pl.coderslab.entity.User;
@@ -14,6 +11,7 @@ import pl.coderslab.repository.CommentRepository;
 import pl.coderslab.repository.TweetRepository;
 import pl.coderslab.repository.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,20 +42,41 @@ public class UserController {
     }
 
     @RequestMapping("/user/{id}")
-    public String tweetDetails(@PathVariable("id") Long id, Model model){
-        Tweet tweet = tweetRepository.findOne(id);
-        model.addAttribute("tweet", tweet);
-        model.addAttribute("commentList", tweetComments(tweet));
+    public String tweetDetails(@PathVariable("id") Long id, Model model, HttpSession session){
+        Object object = session.getAttribute("user");
+        User user = (User)object;
+        User loadedUser = userRepository.findByEmail(user.getEmail());
+        List<Tweet> tweets = allUserTweets(loadedUser.getEmail());
+        for (Tweet checkTweets : tweets) {
+            if(checkTweets.getId() == id){
+                model.addAttribute("tweet", checkTweets);
+                model.addAttribute("commentList", tweetComments(checkTweets));
+                return "tweetDetails";
+            }
+        }
+        model.addAttribute("wrongUser", "wrongUser");
         return "tweetDetails";
     }
 
-    @RequestMapping("/comment/{id}")
-    public String addComment(@PathVariable("id") Long id, @RequestParam("text") String text, HttpSession session){
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+    public String allowComment(@PathVariable("id") Long id, HttpSession session, Model model){
         Object object = session.getAttribute("user");
         if(object == null){
             return "redirect:/twitter/login";
         } else {
-            User user = (User)object;
+            model.addAttribute("allow", id);
+            model.addAttribute("tweets", getAllTweets());
+            return "homePage";
+        }
+    }
+
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.POST)
+    public String addComment(@PathVariable("id") Long id, @RequestParam("text") String text, HttpServletRequest request, HttpSession session){
+        Object object = session.getAttribute("user");
+        if(object == null){
+            return "redirect:/twitter/login";
+        } else {
+            User user = (User) object;
             User loadedUser = userRepository.findByEmail(user.getEmail());
             Tweet tweet = tweetRepository.findOne(id);
             Comment comment = new Comment();
@@ -65,8 +84,13 @@ public class UserController {
             comment.setText(text);
             comment.setPost(tweet);
             commentRepository.save(comment);
+            String allow = request.getParameter("allow");
+            if (allow != null) {
+                return "redirect:/twitter/user";
+            } else {
+                return "redirect:/twitter/user/" + id;
+            }
         }
-        return "redirect:/twitter/user/" + id;
     }
 
     public List<Comment> tweetComments(Tweet tweet){
@@ -86,5 +110,15 @@ public class UserController {
     @ModelAttribute("comments")
     public List<Comment> allComments(){
         return commentRepository.findAll();
+    }
+
+    @ModelAttribute
+    public List<Tweet> getAllTweets() {
+        List<Tweet> tweets = tweetRepository.findAll();
+        List<Tweet> newTweets = new ArrayList<>();
+        for (int i = 0; i < tweets.size(); i++) {
+            newTweets.add(i, tweets.get(tweets.size() - i - 1));
+        }
+        return newTweets;
     }
 }

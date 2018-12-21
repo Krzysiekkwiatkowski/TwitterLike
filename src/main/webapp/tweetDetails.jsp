@@ -17,7 +17,8 @@
 <p><img style="display: block; margin-left: auto; margin-right: auto; width: 80%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY8AhTc1GOz0Ep8pvQeMgdlQwV1riBqeYIh645RuoYGUXRQ83y" /></p>
 <c:import url="navbar.jsp" />
 <h4> Szczegóły tweeta </h4>
-${tweet.id} ${tweet.created} ${tweet.user.username} ${tweet.text}</br>
+<c:if test="${empty wrongUser}">
+${tweet.created} ${tweet.user.username} ${tweet.text}</br>
 <c:if test="${not empty commentList}">
     <h4>Komentarze:</h4>
     <c:forEach items="${commentList}" var="comment">
@@ -27,11 +28,15 @@ ${tweet.id} ${tweet.created} ${tweet.user.username} ${tweet.text}</br>
 <c:if test="${empty commentList}">
     <p>Nie dodano jeszcze komentarzy!</p>
 </c:if>
-<h4>
-    <form method="post" action="http://localhost:8080/twitter/comment/${tweet.id}">
-        Comment: <input type="text" name="text">
-        <input type="submit" value="Add comment">
-    </form>
-</h4>
+    <h4>
+        <form method="post" action="http://localhost:8080/twitter/comment/${tweet.id}">
+            Skomentuj: <input type="text" name="text">
+            <input type="submit" value="Skomentuj">
+        </form>
+    </h4>
+</c:if>
+<c:if test="${not empty wrongUser}">
+    To nie jest twój tweet, nie możesz zobaczyć szczegółów!
+</c:if>
 </body>
 </html>
