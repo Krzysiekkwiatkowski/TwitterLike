@@ -84,6 +84,11 @@ public class MessageController {
             message.setView(true);
             messageRepository.save(message);
         }
+        if(loadedUser.getId() == message.getSender().getId() || loadedUser.getId() == message.getReceiver().getId()){
+            model.addAttribute("message", message);
+            return "showMessage";
+        }
+        model.addAttribute("cheater", "cheater");
         model.addAttribute("message", message);
         return "showMessage";
     }
