@@ -14,7 +14,7 @@
 </head>
 <body>
 <c:import url="logout.jsp" />
-<p><img style="display: block; margin-left: auto; margin-right: auto; width: 80%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY8AhTc1GOz0Ep8pvQeMgdlQwV1riBqeYIh645RuoYGUXRQ83y" /></p>
+<div><img style="display: block; margin-left: auto; margin-right: auto; width: 80%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY8AhTc1GOz0Ep8pvQeMgdlQwV1riBqeYIh645RuoYGUXRQ83y"/></div></br></br>
 <c:import url="navbar.jsp" />
 <h4> Szczegóły wiadomości </h4>
 <c:if test="${empty cheater}">
