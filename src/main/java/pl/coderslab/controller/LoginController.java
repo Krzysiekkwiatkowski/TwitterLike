@@ -24,15 +24,6 @@ public class LoginController {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    MessageRepository messageRepository;
-
-    @Autowired
-    CommentRepository commentRepository;
-
-    @Autowired
-    TweetRepository tweetRepository;
-
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegister(Model model){
         model.addAttribute("user", new User());
