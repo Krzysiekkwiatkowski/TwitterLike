@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.entity.User;
-import pl.coderslab.repository.CommentRepository;
-import pl.coderslab.repository.MessageRepository;
-import pl.coderslab.repository.TweetRepository;
 import pl.coderslab.repository.UserRepository;
 
 import javax.servlet.http.HttpSession;
