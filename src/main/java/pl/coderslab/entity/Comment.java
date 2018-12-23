@@ -1,5 +1,7 @@
 package pl.coderslab.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -16,10 +18,12 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     @ManyToOne
     @JoinColumn(name = "tweet_id")
     @NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Tweet post;
     private Date created;
     @NotBlank

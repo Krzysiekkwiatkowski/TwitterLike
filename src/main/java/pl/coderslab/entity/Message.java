@@ -1,5 +1,7 @@
 package pl.coderslab.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -12,8 +14,10 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User sender;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User receiver;
     @NotBlank
     private String message;

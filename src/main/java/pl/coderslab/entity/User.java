@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.AssertTrue;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 public class User {

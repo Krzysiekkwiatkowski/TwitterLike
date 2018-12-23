@@ -1,5 +1,7 @@
 package pl.coderslab.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -13,9 +15,10 @@ public class Tweet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     @NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     @NotBlank
     @Size(max = 140)
